@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #fffdf7;
+    --ink: #1a1612;
+    --ink-soft: #6b6057;
+    --accent: #c8522a;
+    --accent-light: #f2e8e2;
+    --border: #e0d8cc;
+    --shadow: rgba(26,22,18,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 3rem 4rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  .header-meta {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* HERO LINE */
+  .hero {
+    padding: 3rem 4rem 0;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    max-width: 600px;
+    color: var(--ink);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-rule {
+    margin: 2rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-rule hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-rule span {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* FILTER BAR */
+  .filters {
+    padding: 1.5rem 4rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.4rem 1.1rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  /* GRID */
+  .grid {
+    padding: 1rem 4rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 2rem;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 48px var(--shadow);
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.40s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: contain;
+    display: block;
+    background: var(--accent-light);
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover .card-img {
+    transform: scale(1.03);
+  }
+
+  .img-wrapper {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+
+  .card-body {
+    padding: 1.2rem 1.4rem 1.4rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .card-category {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: 0.1rem;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .price {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .price .old {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    margin-right: 0.35rem;
+    font-weight: 400;
+  }
+
+  .add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1;
+  }
+
+  .add-btn:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  /* LOADING & ERROR STATES */
+  .state-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+  }
+
+  .state-msg .spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    header, .hero, .filters, .grid { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Ma<span>i</span>son</div>
+  <div class="header-meta">Spring Collection 2026</div>
+</header>
+
+<section class="hero">
+  <h1>Crafted with <em>purpose,</em><br>made to last.</h1>
+  <div class="hero-rule">
+    <span id="product-count">Loading…</span>
+    <hr/>
+  </div>
+</section>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" data-cat="all">All</button>
+</div>
+
+<div class="grid" id="grid">
+  <div class="state-msg">
+    <div class="spinner"></div>
+    Loading products…
+  </div>
+</div>
+
+<script>
+  // ─── CONFIG ────────────────────────────────────────────────────────────────
+  const CSV_URL =
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1jE4QEhhTDFn0POWET2qzb_cE4nNxSO37b5vXwb1XPXMZnErZVWv75jtKoMBT3RuuGOK8DwqNc4Tu/pub?output=csv';
+
+  // ─── CSV PARSER ────────────────────────────────────────────────────────────
+  // Handles quoted fields with commas/newlines inside them.
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], field = '', inQuote = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const next = text[i + 1];
+
+      if (inQuote) {
+        if (ch === '"' && next === '"') { field += '"'; i++; }
+        else if (ch === '"')           { inQuote = false; }
+        else                           { field += ch; }
+      } else {
+        if      (ch === '"')  { inQuote = true; }
+        else if (ch === ',')  { row.push(field.trim()); field = ''; }
+        else if (ch === '\n') { row.push(field.trim()); rows.push(row); row = []; field = ''; }
+        else if (ch === '\r') { /* skip */ }
+        else                  { field += ch; }
+      }
+    }
+    // flush last field/row
+    if (field || row.length) { row.push(field.trim()); rows.push(row); }
+
+    return rows;
+  }
+
+  function csvToObjects(rows) {
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(h => h.toLowerCase().trim());
+    return rows.slice(1).filter(r => r.some(c => c)).map(r => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (r[i] || '').trim(); });
+      return obj;
+    });
+  }
+
+  // ─── CARD BUILDER ──────────────────────────────────────────────────────────
+  function buildCard(p) {
+    const cat = (p.category || '').toLowerCase();
+
+    // Price HTML: support optional old_price / original_price column
+    const oldPrice = p.old_price || p.original_price || '';
+    const priceHTML = oldPrice
+      ? `<span class="old">${oldPrice}</span>${p.price}`
+      : p.price;
+
+    // Badge HTML
+    const badgeHTML = p.badge
+      ? `<span class="badge">${escHtml(p.badge)}</span>`
+      : '';
+
+    // Image – fall back to a coloured placeholder if img is blank
+    const imgSrc = p.img || p.image || p.image_url || '';
+    const imgTag = imgSrc
+      ? `<img class="card-img" src="${escHtml(imgSrc)}" alt="${escHtml(p.name)}" loading="lazy"/>`
+      : `<div class="card-img" style="display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;">No image</div>`;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = cat;
+    card.innerHTML = `
+      <div class="img-wrapper">
+        ${imgTag}
+        ${badgeHTML}
+      </div>
+      <div class="card-body">
+        <div class="card-category">${escHtml(p.category || '')}</div>
+        <div class="card-name">${escHtml(p.name || '')}</div>
+        <div class="card-desc">${escHtml(p.description || '')}</div>
+        <div class="card-footer">
+          <div class="price">${priceHTML}</div>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+      </div>`;
+    return card;
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ─── FILTER BAR ────────────────────────────────────────────────────────────
+  let allProducts = [];
+
+  function buildFilters(products) {
+    const filtersEl = document.getElementById('filters');
+    const cats = ['all', ...new Set(
+      products.map(p => (p.category || '').toLowerCase()).filter(Boolean)
+    )];
+
+    filtersEl.innerHTML = cats.map(cat =>
+      `<button class="filter-btn${cat === 'all' ? ' active' : ''}" data-cat="${cat}">
+        ${cat === 'all' ? 'All' : cap(cat)}
+      </button>`
+    ).join('');
+
+    filtersEl.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterCards(btn.dataset.cat);
+    });
+  }
+
+  function filterCards(cat) {
+    document.querySelectorAll('.card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+    });
+  }
+
+  function cap(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // ─── RENDER ────────────────────────────────────────────────────────────────
+  function renderProducts(products) {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+
+    if (!products.length) {
+      grid.innerHTML = '<div class="state-msg">No products found.</div>';
+      return;
+    }
+
+    products.forEach(p => grid.appendChild(buildCard(p)));
+
+    // Update product count in hero
+    document.getElementById('product-count').textContent =
+      `${products.length} product${products.length !== 1 ? 's' : ''}`;
+  }
+
+  // ─── FETCH & INIT ──────────────────────────────────────────────────────────
+  async function init() {
+    try {
+      const res = await fetch(CSV_URL);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      const rows = parseCSV(text);
+      allProducts = csvToObjects(rows);
+
+      buildFilters(allProducts);
+      renderProducts(allProducts);
+    } catch (err) {
+      console.error('Failed to load products:', err);
+      document.getElementById('grid').innerHTML =
+        `<div class="state-msg">⚠️ Could not load products.<br>
+         Check the sheet is published and the URL is correct.</div>`;
+      document.getElementById('product-count').textContent = '–';
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
