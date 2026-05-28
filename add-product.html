@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Add Product — Maison</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #fffdf7;
+    --ink: #1a1612;
+    --ink-soft: #6b6057;
+    --accent: #c8522a;
+    --accent-light: #f2e8e2;
+    --border: #e0d8cc;
+    --shadow: rgba(26,22,18,0.10);
+    --success: #3a7d44;
+    --success-light: #eaf4ec;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 3rem 4rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .back-btn:hover {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  .back-btn svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 3rem 4rem 0;
+  }
+
+  .page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .page-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-rule {
+    margin: 2rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-rule hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-rule span {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ── FORM LAYOUT ── */
+  .form-container {
+    padding: 3rem 4rem 6rem;
+    max-width: 860px;
+  }
+
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2.5rem 3rem;
+    animation: fadeUp 0.45s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION LABELS ── */
+  .form-section {
+    margin-bottom: 2.4rem;
+  }
+
+  .form-section:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── FIELD ROW ── */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .field-row.single {
+    grid-template-columns: 1fr;
+  }
+
+  .field-row.triple {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* ── FIELD ── */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .field label .req {
+    color: var(--accent);
+    margin-left: 2px;
+  }
+
+  .field label .hint {
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    display: block;
+    margin-top: 0.1rem;
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 0.7rem 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    appearance: none;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(26,22,18,0.07);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.55;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236b6057' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.2rem;
+    cursor: pointer;
+  }
+
+  /* ── DIVIDER ── */
+  .form-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  /* ── SUBMIT AREA ── */
+  .submit-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.2rem;
+  }
+
+  .submit-note {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.75rem 2rem;
+    border-radius: 100px;
+    border: none;
+    background: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background: var(--accent);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .submit-btn .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.65s linear infinite;
+    display: none;
+  }
+
+  .submit-btn.loading .btn-spinner { display: block; }
+  .submit-btn.loading .btn-label   { opacity: 0.6; }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── SUCCESS PANEL ── */
+  .success-panel {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3.5rem 2rem;
+    gap: 1rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .success-panel.visible {
+    display: flex;
+  }
+
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--success-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-icon svg {
+    width: 26px;
+    height: 26px;
+    color: var(--success);
+  }
+
+  .success-panel h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .success-panel p {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    max-width: 320px;
+    line-height: 1.6;
+  }
+
+  .success-countdown {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    margin-top: 0.5rem;
+  }
+
+  .success-countdown strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* ── ERROR BANNER ── */
+  .error-banner {
+    display: none;
+    background: #fdf0ed;
+    border: 1px solid #e8c4b8;
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-top: 1rem;
+  }
+
+  .error-banner.visible { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    header, .page-hero, .form-container { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .form-card { padding: 1.8rem 1.5rem; }
+    .field-row, .field-row.triple { grid-template-columns: 1fr; }
+    .submit-area { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Ma<span>i</span>son</a>
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="7,2 3,6 7,10"/>
+    </svg>
+    Back to Shop
+  </a>
+</header>
+
+<section class="page-hero">
+  <h1>Add a new <em>product</em></h1>
+  <div class="hero-rule">
+    <span>Product entry form</span>
+    <hr/>
+  </div>
+</section>
+
+<div class="form-container">
+  <div class="form-card" id="form-card">
+
+    <!-- SUCCESS STATE -->
+    <div class="success-panel" id="success-panel">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>Product added.</h2>
+      <p>Your product has been submitted successfully and will appear in the shop once the sheet refreshes.</p>
+      <div class="success-countdown">Redirecting in <strong id="countdown">3</strong>s…</div>
+    </div>
+
+    <!-- FORM -->
+    <div id="form-inner">
+
+      <!-- SECTION: Core Details -->
+      <div class="form-section">
+        <div class="section-label">Core Details</div>
+
+        <div class="field-row single">
+          <div class="field">
+            <label for="name">
+              Product Name <span class="req">*</span>
+              <span class="hint">The display title shown on the product card.</span>
+            </label>
+            <input type="text" id="name" name="name" placeholder="e.g. Hand-thrown Stoneware Mug" required />
+          </div>
+        </div>
+
+        <div class="field-row single">
+          <div class="field">
+            <label for="description">
+              Description
+              <span class="hint">A short sentence or two describing the product.</span>
+            </label>
+            <textarea id="description" name="description" placeholder="e.g. Wheel-thrown and wood-fired in small batches. Each piece is unique."></textarea>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="category">
+              Category <span class="req">*</span>
+              <span class="hint">Used for the filter bar on the shop.</span>
+            </label>
+            <input type="text" id="category" name="category" placeholder="e.g. Ceramics, Textiles, Lighting…" required />
+          </div>
+          <div class="field">
+            <label for="badge">
+              Badge
+              <span class="hint">Short label shown on the image (e.g. New, Sale).</span>
+            </label>
+            <input type="text" id="badge" name="badge" placeholder="e.g. New, Sale, Limited…" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Pricing -->
+      <div class="form-section">
+        <div class="section-label">Pricing</div>
+
+        <div class="field-row triple">
+          <div class="field">
+            <label for="price">
+              Price <span class="req">*</span>
+              <span class="hint">Current selling price (include currency symbol).</span>
+            </label>
+            <input type="text" id="price" name="price" placeholder="e.g. $48.00" required />
+          </div>
+          <div class="field">
+            <label for="old_price">
+              Original Price
+              <span class="hint">Shown with strikethrough if provided.</span>
+            </label>
+            <input type="text" id="old_price" name="old_price" placeholder="e.g. $65.00" />
+          </div>
+          <div class="field">
+            <label for="original_price">
+              Alt. Original Price
+              <span class="hint">Fallback field for original price column.</span>
+            </label>
+            <input type="text" id="original_price" name="original_price" placeholder="e.g. $65.00" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Media -->
+      <div class="form-section">
+        <div class="section-label">Media</div>
+
+        <div class="field-row single">
+          <div class="field">
+            <label for="img">
+              Image URL
+              <span class="hint">Direct link to the product image (maps to <code>img</code> / <code>image</code> / <code>image_url</code> columns).</span>
+            </label>
+            <input type="url" id="img" name="img" placeholder="https://…" />
+          </div>
+        </div>
+      </div>
+
+      <hr class="form-divider"/>
+
+      <div class="submit-area">
+        <p class="submit-note">Fields marked <span style="color:var(--accent);">*</span> are required.</p>
+        <button class="submit-btn" id="submit-btn" type="button" onclick="submitForm()">
+          <div class="btn-spinner"></div>
+          <span class="btn-label">Submit Product</span>
+        </button>
+      </div>
+
+      <div class="error-banner" id="error-banner"></div>
+
+    </div><!-- /form-inner -->
+  </div><!-- /form-card -->
+</div>
+
+<script>
+  // ─── CONFIG ────────────────────────────────────────────────────────────────
+  // Replace this with your deployed Google Apps Script Web App URL.
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbykT8XNsQf3lh3sCIByzmN4Kw66IvR2WlXKWyldon538yB1OX7FhDv7PKbs0qAICgEi/exec";
+
+  // ─── HELPERS ───────────────────────────────────────────────────────────────
+  function val(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function showError(msg) {
+    const banner = document.getElementById('error-banner');
+    banner.textContent = msg;
+    banner.classList.add('visible');
+  }
+
+  function hideError() {
+    document.getElementById('error-banner').classList.remove('visible');
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = on;
+    btn.classList.toggle('loading', on);
+  }
+
+  function showSuccess() {
+    document.getElementById('form-inner').style.display = 'none';
+    const panel = document.getElementById('success-panel');
+    panel.classList.add('visible');
+
+    let secs = 3;
+    const cd = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      secs--;
+      cd.textContent = secs;
+      if (secs <= 0) {
+        clearInterval(timer);
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+  }
+
+  // ─── SUBMIT ────────────────────────────────────────────────────────────────
+  async function submitForm() {
+    hideError();
+
+    // Basic validation
+    if (!val('name'))     { showError('⚠ Product name is required.'); return; }
+    if (!val('category')) { showError('⚠ Category is required.'); return; }
+    if (!val('price'))    { showError('⚠ Price is required.'); return; }
+
+    setLoading(true);
+
+    // Build URL parameters matching the CSV column names detected in the sheet
+    const params = new URLSearchParams({
+      name:           val('name'),
+      description:    val('description'),
+      category:       val('category'),
+      badge:          val('badge'),
+      price:          val('price'),
+      old_price:      val('old_price'),
+      original_price: val('original_price'),
+      img:            val('img'),
+    });
+
+    try {
+      const res = await fetch(`${WEB_APP_URL}?${params.toString()}`, {
+        method: 'GET', // GET is simplest for Apps Script doGet()
+        mode: 'no-cors', // Apps Script requires no-cors
+      });
+
+      // no-cors means we can't read the response body,
+      // but if fetch didn't throw the request was dispatched successfully.
+      setLoading(false);
+      showSuccess();
+
+    } catch (err) {
+      setLoading(false);
+      showError('⚠ Submission failed. Check your Web App URL and network connection.');
+      console.error('Submission error:', err);
+    }
+  }
+</script>
+</body>
+</html>
